@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>우리 이사 작전 🏠</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f7f5;color:#292524;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif}
+.wrap{max-width:720px;margin:auto;padding:22px 16px 70px}.hero{background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:26px;padding:24px;margin-bottom:16px}
+h1{margin:0 0 7px;font-size:29px}.hero p{margin:0;color:#78716c}.progressbox{margin-top:20px}.progressrow{display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:8px}
+.bar{height:12px;background:#fff;border-radius:99px;overflow:hidden}.fill{height:100%;width:0;background:#fb923c;transition:.25s}
+.card{background:white;border:1px solid #e7e5e4;border-radius:22px;padding:20px;margin:14px 0;box-shadow:0 8px 25px rgba(0,0,0,.035)}
+h2{font-size:20px;margin:0 0 14px}.hint{font-size:13px;color:#a8a29e;margin:-6px 0 12px}
+.item{display:flex;gap:12px;align-items:flex-start;padding:12px 4px;border-bottom:1px solid #f5f5f4}.item:last-child{border-bottom:0}
+input[type=checkbox]{appearance:none;width:23px;height:23px;border:2px solid #d6d3d1;border-radius:7px;flex:0 0 auto;margin-top:1px;cursor:pointer}
+input[type=checkbox]:checked{background:#fb923c;border-color:#fb923c;position:relative}input[type=checkbox]:checked:after{content:"✓";color:white;font-weight:900;position:absolute;left:4px;top:-1px}
+label{cursor:pointer;line-height:1.45;flex:1}.done label{text-decoration:line-through;color:#a8a29e}.time{display:inline-block;min-width:72px;font-weight:900;color:#c2410c}
+.badge{display:inline-block;font-size:12px;font-weight:800;padding:4px 8px;border-radius:99px;background:#f5f5f4;margin-left:5px}
+.alert{background:#fff7ed;border-radius:14px;padding:12px 14px;margin-top:12px;font-size:14px;line-height:1.55}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}button{border:0;border-radius:14px;padding:13px;font-weight:800;cursor:pointer}
+.reset{background:#f5f5f4;color:#57534e}.all{background:#292524;color:white}.small{font-size:12px;color:#a8a29e;text-align:center;margin-top:18px}
+.addform{display:grid;gap:10px}.addform input,.addform select{width:100%;border:1px solid #d6d3d1;border-radius:13px;padding:13px;font:inherit;background:#fff;color:#292524}
+.addform button{background:#fb923c;color:white}.del{background:#f5f5f4;color:#78716c;padding:7px 9px;border-radius:9px;font-size:12px;flex:0 0 auto}
+</style></head>
+<body><div class="wrap">
+<div class="hero"><h1>🏠 우리 이사 작전</h1><p>9/28 오늘 정리 → 9/29 화서로 이사!</p><p id="sync" style="margin-top:8px;font-size:13px">🟠 실시간 연결 중...</p><div class="progressbox"><div class="progressrow"><span>전체 진행률</span><span id="pct">0%</span></div><div class="bar"><div class="fill" id="fill"></div></div></div></div>
+
+<div class="card" id="card-today"><h2>🌙 오늘 꼭 해야 할 일</h2><div class="hint">오늘 끝내야 내일 아침이 편하다!</div>
+<div class="item"><input id="a1" type="checkbox"><label for="a1">폐기물 신고</label></div>
+<div class="item"><input id="a2" type="checkbox"><label for="a2">냉장고 내용물 할머니댁에 맡기기</label></div>
+<div class="item"><input id="a3" type="checkbox"><label for="a3">쓰레기봉투 구입 <b>(20L)</b></label></div>
+<div class="item"><input id="a4" type="checkbox"><label for="a4">주방 물품 정리</label></div>
+<div class="item"><input id="a5" type="checkbox"><label for="a5">욕실 물품 정리</label></div><div id="custom-today"></div></div>
+
+<div class="card" id="card-trash"><h2>🗑️ 버리기</h2>
+<div class="item"><input id="b1" type="checkbox"><label for="b1">식탁</label></div><div class="item"><input id="b2" type="checkbox"><label for="b2">매트리스</label></div><div class="item"><input id="b3" type="checkbox"><label for="b3">행거</label></div><div id="custom-trash"></div></div>
+
+<div class="card" id="card-recycle"><h2>♻️ 재활용 / 별도 배출</h2>
+<div class="item"><input id="c1" type="checkbox"><label for="c1">청소기</label></div><div class="item"><input id="c2" type="checkbox"><label for="c2">모니터</label></div><div class="item"><input id="c3" type="checkbox"><label for="c3">밥솥</label></div><div id="custom-recycle"></div></div>
+
+<div class="card" id="card-timeline"><h2>⏰ 내일의 타임라인</h2>
+<div class="item"><input id="d1" type="checkbox"><label for="d1"><span class="time">07:00</span> 씻기 + 빨래감 정리<br>원래 있던 욕실 샤워기 및 콘센트 덮개 복구</label></div>
+<div class="item"><input id="d2" type="checkbox"><label for="d2"><span class="time">07:40</span> 용이 렌트카 빌리러 출발 🚗</label></div>
+<div class="item"><input id="d3" type="checkbox"><label for="d3"><span class="time">08:00</span> 렌트카 시작 / 모니터 및 귀중품 렌트카에 옮기기</label></div>
+<div class="item"><input id="d4" type="checkbox"><label for="d4"><span class="time">09:00~09:30</span> 이사 시작 📦</label></div>
+<div class="item"><input id="d5" type="checkbox"><label for="d5"><span class="time">11:00</span> 상황 보고 집주인에게 연락<br>상도집 전입 관련 확인 / 정리가 안 끝났으면 용이 먼저 출발</label></div>
+<div class="item"><input id="d6" type="checkbox"><label for="d6"><span class="time">11:30</span> <b>등기사항증명서(등기부) 당일 재확인</b> 🔎</label></div>
+<div class="item"><input id="d7" type="checkbox"><label for="d7"><span class="time">12:00</span> 계약서 작성 <span class="badge">기존 계약서와 동일한지 체크</span><br>이상 없으면 잔금 입금</label></div>
+<div class="item"><input id="d8" type="checkbox"><label for="d8"><span class="time">입주 후</span> 확정일자 필요 여부 확인 + 전입신고 진행</label></div>
+<div class="item"><input id="d9" type="checkbox"><label for="d9"><span class="time">입주 후</span> 세탁기·건조기 놓을 베란다부터 청소 시작 🧹</label></div>
+<div class="item"><input id="d10" type="checkbox"><label for="d10"><span class="time">17:00</span> 인터넷 기사님 도착 예정 🌐</label></div>
+<div id="custom-timeline"></div><div class="alert">⭐ <b>중요 순서:</b> 등기부 당일 확인 → 계약서 확인 → 잔금 지급 → 전입 관련 절차</div></div>
+
+<div class="card" id="card-arrival"><h2>🚚 내일 도착 물품</h2><div class="hint">공동현관 비밀번호 확인 후 연락 오면 전달하기</div>
+<div class="item"><input id="e1" type="checkbox"><label for="e1">매트리스</label></div><div class="item"><input id="e2" type="checkbox"><label for="e2">이불</label></div><div class="item"><input id="e3" type="checkbox"><label for="e3">청소기</label></div>
+<div id="custom-arrival"></div><div class="alert">🔑 공동현관 비밀번호 확인하기</div></div>
+
+<div class="card"><h2>➕ 할 일 추가</h2><div class="hint">생각나는 일이 생기면 바로 추가! 둘의 휴대폰에 실시간으로 공유돼요.</div>
+<div class="addform"><select id="newCategory"><option value="today">🌙 오늘 꼭 해야 할 일</option><option value="trash">🗑️ 버리기</option><option value="recycle">♻️ 재활용 / 별도 배출</option><option value="timeline">⏰ 내일의 타임라인</option><option value="arrival">🚚 내일 도착 물품</option></select>
+<input id="newTime" type="text" placeholder="시간 (선택) 예: 13:30"><input id="newText" type="text" placeholder="할 일을 입력하세요" maxlength="100"><button onclick="addTask()">+ 체크리스트에 추가</button></div></div>
+
+<div class="buttons"><button class="reset" onclick="resetAll()">체크 초기화</button><button class="all" onclick="checkAll()">전부 완료 ✓</button></div>
+<div class="small">🔥 지연 ↔ 용이 실시간 공유 체크리스트</div>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getFirestore, collection, doc, setDoc, addDoc, deleteDoc, updateDoc, onSnapshot, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+const firebaseConfig={apiKey:"AIzaSyAKXh1afbhJBbRWnAVjGXUy0nuSFGetVg8",authDomain:"moving-checklist-53680.firebaseapp.com",projectId:"moving-checklist-53680",storageBucket:"moving-checklist-53680.firebasestorage.app",messagingSenderId:"15508734891",appId:"1:15508734891:web:e42ef90fcc72f15295c8ee"};
+const db=getFirestore(initializeApp(firebaseConfig));
+const ref=collection(db,"checklists","move-20260929","tasks");
+const cats=['today','trash','recycle','timeline','arrival'];
+const defaults=[
+['a1','today','폐기물 신고',''],['a2','today','냉장고 내용물 할머니댁에 맡기기',''],['a3','today','쓰레기봉투 구입 (20L)',''],['a4','today','주방 물품 정리',''],['a5','today','욕실 물품 정리',''],
+['b1','trash','식탁',''],['b2','trash','매트리스',''],['b3','trash','행거',''],['c1','recycle','청소기',''],['c2','recycle','모니터',''],['c3','recycle','밥솥',''],
+['d1','timeline','씻기 + 빨래감 정리 / 원래 있던 욕실 샤워기 및 콘센트 덮개 복구','07:00'],['d2','timeline','용이 렌트카 빌리러 출발 🚗','07:40'],['d3','timeline','렌트카 시작 / 모니터 및 귀중품 렌트카에 옮기기','08:00'],['d4','timeline','이사 시작 📦','09:00~09:30'],['d5','timeline','상황 보고 집주인에게 연락 / 상도집 전입 관련 확인 / 정리가 안 끝났으면 용이 먼저 출발','11:00'],['d6','timeline','등기사항증명서(등기부) 당일 재확인 🔎','11:30'],['d7','timeline','계약서 작성(기존 계약서와 동일한지 체크) / 이상 없으면 잔금 입금','12:00'],['d8','timeline','확정일자 필요 여부 확인 + 전입신고 진행','입주 후'],['d9','timeline','세탁기·건조기 놓을 베란다부터 청소 시작 🧹','입주 후'],['d10','timeline','인터넷 기사님 도착 예정 🌐','17:00'],
+['e1','arrival','매트리스',''],['e2','arrival','이불',''],['e3','arrival','청소기','']];
+
+function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+async function seed(){for(let i=0;i<defaults.length;i++){let [id,category,text,time]=defaults[i];await setDoc(doc(ref,id),{category,text,time,done:false,builtIn:true,sort:i},{merge:true})}}
+function progress(){const bs=[...document.querySelectorAll('.item input[type=checkbox]')];bs.forEach(b=>b.closest('.item').classList.toggle('done',b.checked));let p=bs.length?Math.round(bs.filter(b=>b.checked).length/bs.length*100):0;document.getElementById('pct').textContent=p+'%';document.getElementById('fill').style.width=p+'%'}
+function bindFixed(data){defaults.forEach(([id])=>{const b=document.getElementById(id);if(!b)return;const t=data.find(x=>x.id===id);b.checked=!!t?.done;b.onchange=()=>updateDoc(doc(ref,id),{done:b.checked});});}
+function drawCustom(data){cats.forEach(c=>{let root=document.getElementById('custom-'+c);root.innerHTML='';data.filter(t=>!t.builtIn&&t.category===c).sort((a,b)=>(a.sort||0)-(b.sort||0)).forEach(t=>{let row=document.createElement('div');row.className='item';row.innerHTML=`<input type="checkbox" ${t.done?'checked':''}><label>${t.time?`<span class="time">${esc(t.time)}</span> `:''}${esc(t.text)}</label><button class="del">삭제</button>`;row.querySelector('input').onchange=e=>updateDoc(doc(ref,t.id),{done:e.target.checked});row.querySelector('.del').onclick=()=>{if(confirm('이 할 일을 삭제할까요?'))deleteDoc(doc(ref,t.id))};root.appendChild(row)})});}
+onSnapshot(ref,async snap=>{if(snap.empty){await seed();return}const data=snap.docs.map(d=>({id:d.id,...d.data()}));bindFixed(data);drawCustom(data);progress();document.getElementById('sync').textContent='🟢 실시간 동기화 연결됨';},e=>{document.getElementById('sync').textContent='🔴 연결 실패 — Firestore 규칙 확인';console.error(e)});
+window.addTask=async()=>{let text=document.getElementById('newText').value.trim(),time=document.getElementById('newTime').value.trim(),category=document.getElementById('newCategory').value;if(!text){alert('할 일을 입력해주세요!');return}await addDoc(ref,{category,time,text,done:false,builtIn:false,sort:Date.now()});document.getElementById('newText').value='';document.getElementById('newTime').value='';document.getElementById('card-'+category).scrollIntoView({behavior:'smooth',block:'center'})};
+document.getElementById('newText').addEventListener('keydown',e=>{if(e.key==='Enter')window.addTask()});
+window.resetAll=async()=>{if(!confirm('모든 체크를 초기화할까요? 추가한 할 일은 삭제되지 않습니다.'))return;const s=await getDocs(ref),b=writeBatch(db);s.forEach(x=>b.update(x.ref,{done:false}));await b.commit()};
+window.checkAll=async()=>{const s=await getDocs(ref),b=writeBatch(db);s.forEach(x=>b.update(x.ref,{done:true}));await b.commit()};
+</script></body></html>
